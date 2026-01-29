@@ -1,0 +1,236 @@
+{
+  "info": {
+    "_postman_id": "4fb7a957-4054-448c-8f54-c34250d02fd1",
+    "name": "GorestApi_ChainingWithTokenAuth",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51509819",
+    "_collection_link": "https://go.postman.co/collection/51509819-4fb7a957-4054-448c-8f54-c34250d02fd1?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Create User",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "var random=Math.random().toString(36).substring(2);\r",
+              "var useremail=\"ramesh\"+random+\"@gmail.com\";\r",
+              "var username=\"ramesh\"+random;\r",
+              "pm.environment.set(\"email_env\",useremail);\r",
+              "pm.environment.set(\"name_env\",username);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const jsonData = pm.response.json();\r",
+              "pm.environment.set(\"userid_env\", jsonData.id);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"{{name_env}}\",\r\n  \"gender\": \"male\",\r\n  \"email\": \"{{email_env}}\",\r\n  \"status\": \"inactive\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url_gorest}}/public/v2/users",
+          "host": [
+            "{{url_gorest}}"
+          ],
+          "path": [
+            "public",
+            "v2",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get User Details",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "//validating json fields in the response\r",
+              "\r",
+              "pm.test(\"values of json fields\", () =>{\r",
+              "var jsonData=pm.response.json();\r",
+              "\r",
+              "pm.expect(jsonData.id).to.eql(pm.environment.get(\"userid_env\"));\r",
+              "pm.expect(jsonData.email).to.eql(pm.environment.get(\"email_env\"));\r",
+              "pm.expect(jsonData.name).to.eql(pm.environment.get(\"name_env\"));\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{url_gorest}}/public/v2/users/{{userid_env}}",
+          "host": [
+            "{{url_gorest}}"
+          ],
+          "path": [
+            "public",
+            "v2",
+            "users",
+            "{{userid_env}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update User",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "var random=Math.random().toString(36).substring(2);\r",
+              "var useremail=\"ramesh\"+random+\"@gmail.com\";\r",
+              "var username=\"ramesh\"+random;\r",
+              "pm.environment.set(\"email_env\",useremail);\r",
+              "pm.environment.set(\"name_env\",username);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"{{name_env}}\",\r\n  \"email\": \"{{email_env}}\",\r\n  \"status\": \"active\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url_gorest}}/public/v2/users/{{userid_env}}",
+          "host": [
+            "{{url_gorest}}"
+          ],
+          "path": [
+            "public",
+            "v2",
+            "users",
+            "{{userid_env}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Request and Env Variable",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.environment.unset(\"userid_env\");\r",
+              "pm.environment.unset(\"email_env\");\r",
+              "pm.environment.unset(\"name_env\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{url_gorest}}/public/v2/users/{{userid_env}}",
+          "host": [
+            "{{url_gorest}}"
+          ],
+          "path": [
+            "public",
+            "v2",
+            "users",
+            "{{userid_env}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "f4c87c58b04cd433f760d1319a8b3e02b09adb1b7073336ec5d3c9ebdcbd308e",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
