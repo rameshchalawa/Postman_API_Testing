@@ -3,6 +3,8 @@
 Gorest API – Chaining With Token Auth  
 This repository contains a Postman collection for testing the GoREST Users API with request chaining and token-based authentication.  
 
+**Published Documentation:** https://documenter.getpostman.com/view/51509819/2sBXVo9TG7  
+
 **Running The Collection**  
 
 Import the Postman collection into your workspace.  
